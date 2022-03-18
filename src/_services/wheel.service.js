@@ -10,7 +10,7 @@ var hostname = window.location.pathname;
 
 // if (hostname.indexOf('fast-x') > -1) {
 
-const API_URL = 'https://bot.tbf.bet/api/';
+const API_URL = 'https://bot.fast-x.app/api/';
 
 // const API_URL = 'http://bot.fast-x.localhost/api/';
 
