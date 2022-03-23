@@ -238,6 +238,8 @@ class Register extends Component {
         })
             .then((response) => {
 
+                console.log(response);
+
                 if (response.status === true) {
 
                     const { username, password, telephone, brand } = this.state;
@@ -264,7 +266,7 @@ class Register extends Component {
 
                 } else {
 
-                    NotificationManager.warning(response.data.message, 'ขออภัยค่ะ');
+                    NotificationManager.warning(response.message, 'ขออภัยค่ะ');
 
                     this.setState({
                         btnLogin: false
