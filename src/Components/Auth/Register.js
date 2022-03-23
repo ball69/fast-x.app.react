@@ -238,7 +238,7 @@ class Register extends Component {
         })
             .then((response) => {
 
-                if (response.data.status) {
+                if (response.status === true) {
 
                     const { username, password, telephone, brand } = this.state;
 
