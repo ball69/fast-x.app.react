@@ -7,12 +7,11 @@
     font-family: 'Prompt', sans-serif !important;
 }
 
-.notification {
-    position: fixed;
-    bottom: 0% !important;
+.notification-container {
+    position: fixed !important;
+    top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-    width: 100%;
 }
 
 body {

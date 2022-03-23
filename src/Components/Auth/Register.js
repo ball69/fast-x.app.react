@@ -112,7 +112,7 @@ class Register extends Component {
         telephone = telephone.replace(/-/g, '');
 
         if (telephone.length < 10) {
-            NotificationManager.warning('กรุณาระบุเบอร์โทรศัพท์', 'ขออภัยค่ะ');
+            NotificationManager.warning('กรุณาระบุเบอร์โทรศัพท์', 'ขออภัยค่ะ', 10000000);
 
             this.setState({
                 btnTelephone: false
@@ -123,7 +123,7 @@ class Register extends Component {
         brandService.checkPhone(this.state.brand.id, this.state.telephone)
             .then((response) => {
                 if (response.status === false) {
-                    NotificationManager.error('เบอร์โทรศัพท์นี้มีในระบบแล้ว', 'ขออภัยค่ะ');
+                    NotificationManager.error('เบอร์โทรศัพท์นี้มีในระบบแล้ว', 'ขออภัยค่ะ', 10000000);
 
                     this.setState({
                         btnTelephone: false
