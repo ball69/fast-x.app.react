@@ -238,9 +238,7 @@ class Register extends Component {
         })
             .then((response) => {
 
-                console.log(response);
-
-                if (response.status === true) {
+                if (response.data.status === true) {
 
                     const { username, password, telephone, brand } = this.state;
 
@@ -248,25 +246,25 @@ class Register extends Component {
                         .then((response) => {
                             if (response) {
                                 this.setState({
-                                    btnLogin: false
+                                    btnForm: false
                                 });
                                 this.props.history.push(`/${this.brand}/register/success`);
                             } else {
                                 NotificationManager.warning('ชื่อผู้ใชงานหรือรหัสผ่านผิดพลาด', 'ขออภัยค่ะ');
                                 this.setState({
-                                    btnLogin: false
+                                    btnForm: false
                                 });
                             }
                         }).catch(error => {
                             console.log(error);
                             this.setState({
-                                btnLogin: false
+                                btnForm: false
                             });
                         })
 
                 } else {
 
-                    NotificationManager.warning(response.message, 'ขออภัยค่ะ');
+                    NotificationManager.warning(response.data.message, 'ขออภัยค่ะ');
 
                     this.setState({
                         btnLogin: false
