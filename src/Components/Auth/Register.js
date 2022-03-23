@@ -238,7 +238,7 @@ class Register extends Component {
         })
             .then((response) => {
 
-                if (response.data) {
+                if (response.data.status) {
 
                     const { username, password, telephone, brand } = this.state;
 
@@ -262,7 +262,16 @@ class Register extends Component {
                             });
                         })
 
+                } else {
+
+                    NotificationManager.warning(response.data.message, 'ขออภัยค่ะ');
+
+                    this.setState({
+                        btnLogin: false
+                    });
+
                 }
+
             }, (error) => {
                 alert(error);
             })
