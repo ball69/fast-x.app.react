@@ -203,7 +203,6 @@ class Register extends Component {
 
         this.setState({
             btnForm: true,
-
         });
 
         e.preventDefault();
@@ -267,7 +266,7 @@ class Register extends Component {
                     NotificationManager.warning(response.data.message, 'ขออภัยค่ะ');
 
                     this.setState({
-                        btnLogin: false
+                        btnForm: false
                     });
 
                 }
