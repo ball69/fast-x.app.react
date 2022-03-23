@@ -115,10 +115,13 @@ class Withdraw extends Component {
         }
         brandService.withdraw(this.state.user.id, this.state.amount_withdraw)
             .then(response => {
-                console.log(response);
                 if (response.data.code == 400) {
                     NotificationManager.warning(response.data.msg, 'คำเตือน', 3000);
                 } else {
+                    const total_credit = this.state.profile.credit - this.state.amount_withdraw;
+                    this.setState({
+                        credit: total_credit
+                    })
                     NotificationManager.success(response.data.msg, '', 3000);
                 }
             }, (error) => {
