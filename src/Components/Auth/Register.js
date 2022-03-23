@@ -272,7 +272,7 @@ class Register extends Component {
                 }
 
             }, (error) => {
-                alert(error);
+                alert(error)
             })
 
     }
