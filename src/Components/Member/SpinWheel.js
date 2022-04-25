@@ -102,7 +102,7 @@ const Example = (props) => {
                 }
             }, 1500);
 
-            // window.location.reload(false);
+            // window.location.reload(true);
         }
         if (event.data === 0) {
             var youtueElement = document.querySelector('#youtue-iframe');
@@ -111,7 +111,7 @@ const Example = (props) => {
             setPauseVideo(1);
             setModalYoutue(false);
             setBindMouse(false);
-            // window.location.reload(false);
+            // window.location.reload(true);
         }
     }
 
@@ -173,7 +173,7 @@ const Example = (props) => {
 
         setWheelAmount(data.wheel_amount);
 
-        if(data.wheel_amount > 1) {
+        if (data.wheel_amount > 1) {
             setWheelAmount(1);
         }
 
@@ -249,12 +249,11 @@ const Example = (props) => {
         }).then((response) => {
             if (response.status === 500) {
                 NotificationManager.warning(response.message, '');
-                window.location.reload(false);
+                window.location.reload(true);
             } else {
                 NotificationManager.info(response.message, '');
-                window.location.reload(false);
+                window.location.reload(true);
             }
-
         }, (error) => {
             console.log(error);
         }).catch((error) => {
@@ -281,7 +280,7 @@ const Example = (props) => {
                                 </h1>
                                 <h3 className="text-center text-dark pt-2 pb-2">ขอแสดงความยินดี</h3>
                                 <h3 className="text-center text-dark pt-2 pb-2">Username: {user.username}</h3>
-                                <h3 className="text-dark text-center pt-2 pb-4"> คุณได้ 
+                                <h3 className="text-dark text-center pt-2 pb-4"> คุณได้
                                     "<span >{rewardString}</span>"
                                 </h3>
                                 <button className="btn btn-success btn-lg btn-block" onClick={() => getReward()}>รับรางวัล</button>

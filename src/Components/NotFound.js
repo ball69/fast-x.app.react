@@ -8,11 +8,15 @@ class NotFound extends Component {
         this.state = {
             loading: true,
         }
+        // this.clickButton = this.clickButton.bind(this);
     }
 
     componentDidMount() {
         this.setState({ loading: false });
     }
+
+    // clickButton(e) {
+    // }
 
     render() {
         return (
@@ -20,6 +24,7 @@ class NotFound extends Component {
                 {(this.state.loading) ?
                     <Loading></Loading> :
                     <div className="app-content content ">
+                        {/* <button class="btn btn-primary" onClick={(e) => this.clickButton(e)}>Click To Reload</button> */}
                         <div className="content-wrapper">
                             <div className="content-body">
                                 <div className="auth-wrapper auth-v1 px-2">

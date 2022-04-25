@@ -7,15 +7,15 @@
     font-family: 'Prompt', sans-serif !important;
 }
 
+body {
+    font-family: 'Prompt', sans-serif !important;
+}
+
 .notification-container {
     position: fixed !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
-}
-
-body {
-    font-family: 'Prompt', sans-serif !important;
 }
 
 .progress {

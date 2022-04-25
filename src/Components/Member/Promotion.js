@@ -129,6 +129,26 @@ class Promotion extends Component {
             .then((response) => {
                 if (response.status == 'success') {
                     NotificationManager.success(response.msg, 'เลือกโปรโมชั่นสำเร็จ');
+                    brandService.getPromotion(this.state.user.id)
+                        .then((response) => {
+                            if (this.state.profile.promotion_id != 0) {
+                                this.setState({
+                                    modalPromotion: true,
+                                });
+                            }
+                            const promotionInvite = response.data.filter(promotion => promotion.type_promotion == 5)[0];
+                            this.setState({
+                                promotions: response.data,
+                                promotionInvite: promotionInvite,
+                            });
+                            window.location.reload(true);
+                        }, (error) => {
+                            console.log(error);
+                        });
+
+                    this.setState({
+                        buttonPromotionLoad: 0
+                    });
                     brandService.credit(this.state.user.id)
                         .then((response) => {
                             if (response.data) {
@@ -151,25 +171,6 @@ class Promotion extends Component {
                                 loadingCredit: false
                             });
                         });
-                    brandService.getPromotion(this.state.user.id)
-                        .then((response) => {
-                            if (this.state.profile.promotion_id != 0) {
-                                this.setState({
-                                    modalPromotion: true,
-                                });
-                            }
-                            const promotionInvite = response.data.filter(promotion => promotion.type_promotion == 5)[0];
-                            this.setState({
-                                promotions: response.data,
-                                promotionInvite: promotionInvite,
-                            })
-                        }, (error) => {
-                            console.log(error);
-                        });
-
-                    this.setState({
-                        buttonPromotionLoad: 0
-                    })
 
                 } else if (response.status == 'warning') {
 

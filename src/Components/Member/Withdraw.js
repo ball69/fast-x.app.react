@@ -21,6 +21,8 @@ class Withdraw extends Component {
             promotionLast: '',
             amount_withdraw: 0.00,
             url: '',
+            creditWithdrawMax: 0.00,
+            promotionStatus: 0,
         }
         this.hideModal = this.hideModal.bind(this);
         this.handleAmountWithdraw = this.handleAmountWithdraw.bind(this);
@@ -91,6 +93,11 @@ class Withdraw extends Component {
                         this.setState({
                             loadingCredit: false
                         });
+                        if (response.data.promotionLast) {
+                            if (response.data.promotion_last.promotion.withdraw_max != 0) {
+                                this.calWithdrawMax();
+                            }
+                        }
                     }
                 }, (error) => {
                     // console.log(error);
@@ -101,11 +108,34 @@ class Withdraw extends Component {
 
     }
 
+    calWithdrawMax() {
+        var credit = this.state.credit;
+        var promotionLast = this.state.promotionLast;
+        var promotion = promotionLast.promotion;
+        var turn_over_cost = (promotionLast && promotion.type_turn_over == 1) ? parseFloat(this.calBonusTurnOver(promotionLast)) : 0;
+        // console.log(promotion);
+        // console.log(credit);
+        if (this.state.promotionLast.promotion.withdraw_max_type == 1) {
+            var withdraw_max = promotion.withdraw_max;
+        } else if (this.state.promotionLast.promotion.withdraw_max_type == 2) {
+            var bonus = promotionLast.amount + promotionLast + bonus;
+            var withdraw_max = bonus * promotion.withdraw_max;
+        }
+        if (credit > turn_over_cost) {
+            this.setState({
+                promotionStatus: 1,
+            })
+        }
+        this.setState({
+            withdraw_max: withdraw_max
+        })
+    }
+
     handleWithdrawSubmit(e) {
         e.preventDefault();
         const credit = parseFloat(this.state.profile.credit);
         const turn_over_cost = (this.state.promotionLast && this.state.promotionLast.promotion.type_turn_over == 1) ? parseFloat(this.calBonusTurnOver(this.state.promotionLast)) : 0;
-        if (this.state.amount_withdraw <= 0) {
+        if (this.state.amount_withdraw <= 0 && this.state.creditWithdrawMax == 0) {
             NotificationManager.error('กรุณาระบุจำนวนเงินที่มากกว่า 0', 'คำเตือน', 2000);
             return;
         }
@@ -115,6 +145,7 @@ class Withdraw extends Component {
         }
         brandService.withdraw(this.state.user.id, this.state.amount_withdraw)
             .then(response => {
+                console.log(response);
                 if (response.data.code == 400) {
                     NotificationManager.warning(response.data.msg, 'คำเตือน', 3000);
                 } else {
@@ -230,7 +261,7 @@ class Withdraw extends Component {
                                                                                 <i className="fad fa-exclamation-triangle"></i> คุณมีโปรโมชั่นที่ต้องทำให้สำเร็จ
                                                                             </h4>
                                                                             <hr className="hr-red" />
-                                                                            <h5 className="text-overflow">
+                                                                            <h5 className="">
                                                                                 {this.state.promotionLast.promotion.name}
                                                                             </h5>
                                                                             {(this.state.promotionLast.turn_over > 0 && (this.state.promotionLast.type_turn_over != 3)) ?
@@ -248,22 +279,50 @@ class Withdraw extends Component {
                                                         <div className="col-lg-12">
                                                             <h4>3. ถอนเงิน</h4>
                                                             <hr />
-                                                            <div className="col-lg-6 mx-auto">
-                                                                <div className="p-4 mt-1 mb-4" style={{ borderRadius: "5px" }}>
-                                                                    <h5 >ระบุจำนวนเงินที่ต้องการถอน</h5>
-                                                                    <CurrencyFormat thousandSeparator={true}
-                                                                        className="form-control form-control-lg form-auto form-currency"
-                                                                        inputmode="numeric"
-                                                                        placeholder="0.00"
-                                                                        onChange={this.handleAmountWithdraw}
-                                                                        decimalScale={2}
-                                                                        required />
-                                                                    <button className="btn btn-auto mt-2 btn-block btn-lg">
-                                                                        <i className="fad fa-check mr-1"></i>
-                                                                        ถอนเงิน
-                                                                    </button>
-                                                                    <small className="text-white mb-0">ถอนขั้นต่ำ {this.state.brand.withdraw_min}</small>
-                                                                </div>
+                                                            <div className='row'>
+                                                                {(this.state.creditWithdrawMax == 0) ?
+                                                                    <div className="col-lg-12 mx-auto">
+                                                                        <div className="p-4 mt-1 mb-4" style={{ borderRadius: "5px" }}>
+                                                                            <h5 >ระบุจำนวนเงินที่ต้องการถอน</h5>
+                                                                            <CurrencyFormat thousandSeparator={true}
+                                                                                className="form-control form-control-lg form-auto form-currency"
+                                                                                inputmode="numeric"
+                                                                                placeholder="0.00"
+                                                                                onChange={this.handleAmountWithdraw}
+                                                                                decimalScale={2}
+                                                                                required />
+                                                                            <button className="btn btn-auto mt-2 btn-block btn-lg">
+                                                                                <i className="fad fa-check mr-1"></i>
+                                                                                ถอนเงิน
+                                                                            </button>
+                                                                            <small className="text-white mb-0">ถอนขั้นต่ำ {this.state.brand.withdraw_min}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                    :
+                                                                    <div className="col-lg-12 mx-auto">
+
+                                                                        <div className="p-4 mt-1 mb-4" style={{ borderRadius: "5px" }}>
+                                                                            {(this.state.promotionStatus == 1) ?
+                                                                                <div>
+                                                                                    <h5>คุณได้ทำเงื่อนไขครบตามที่โปรโมชั่นกำหนดไว้สำเร็จแล้ว</h5>
+                                                                                    <button className="btn btn-auto mt-2 btn-block btn-lg" >
+                                                                                        <i className="fad fa-times mr-1"></i>
+                                                                                        ถอนเงิน
+                                                                                    </button></div>
+                                                                                :
+                                                                                <div>
+                                                                                    <h5>เงื่อนไขโปรโมชั่นไม่ผ่าน</h5>
+                                                                                    <button className="btn btn-danger mt-2 btn-block btn-lg" disabled>
+                                                                                        <i className="fad fa-times mr-1"></i>
+                                                                                        ถอนเงิน
+                                                                                    </button>
+                                                                                </div>
+                                                                            }
+                                                                            <small className="text-white mb-0">ถอนสูงสุด {this.state.withdraw_max} บาท</small>
+                                                                        </div>
+                                                                    </div>
+
+                                                                }
                                                             </div>
                                                         </div>
                                                     </div>
@@ -274,7 +333,7 @@ class Withdraw extends Component {
                                 </div>
                             </div>
                             <Footer props={this.props} brand={this.state.brand} url={this.state.url}></Footer>
-                        </div>
+                        </div >
                 }
             </div>
         );
