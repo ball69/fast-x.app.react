@@ -286,7 +286,7 @@ class Deposit extends Component {
                                                                                     >
                                                                                         <div className="card-body">
                                                                                             <img
-                                                                                                src={"https://bot.tbf.bet/" + bank.bank.logo}
+                                                                                                src={"https://file.fast-x.app/" + bank.bank.logo}
                                                                                                 className="img-fluid img-center mb-5"
                                                                                                 width="60"
                                                                                                 alt=""
@@ -362,7 +362,7 @@ class Deposit extends Component {
                                                                                     >
                                                                                         <div className="card-body">
                                                                                             <img
-                                                                                                src={"https://bot.tbf.bet/" + bank.bank.logo}
+                                                                                                src={"https://file.fast-x.app/" + bank.bank.logo}
                                                                                                 className="img-fluid img-center mb-5"
                                                                                                 width="60"
                                                                                                 alt=""
