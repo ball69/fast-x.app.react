@@ -14,14 +14,14 @@ class wheelService {
 
         if (hostname == 'appy.bet') {
 
-            this.config_url = 'https://config.appy.bet/api';
+            this.config_url = 'https://config.appy.bet/api/';
 
             if (subdomain === 'pg88') {
-                this.api_url = 'https://ap0.appy.bet/api';
+                this.api_url = 'https://ap0.appy.bet/api/';
             } else if (subdomain === 'pgslots') {
-                this.api_url = 'https://ap1.appy.bet/api';
+                this.api_url = 'https://ap1.appy.bet/api/';
             } else if (subdomain === 'ambme') {
-                this.api_url = 'https://ap2.appy.bet/api';
+                this.api_url = 'https://ap2.appy.bet/api/';
             }
 
             // await axios
@@ -37,9 +37,9 @@ class wheelService {
 
         } else {
 
-            this.api_url = 'https://bot.fast-x.app/api';
+            this.api_url = 'https://bot.fast-x.app/api/';
 
-            this.config_url = 'https://config.fast-x.app/api';
+            this.config_url = 'https://config.fast-x.app/api/';
 
         }
 
