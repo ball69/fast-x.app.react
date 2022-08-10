@@ -24,7 +24,7 @@ class brandService {
 
         } else {
 
-            this.api_url = 'https://bot.fast-x.app/api/';
+            this.api_url = 'https://bot.fast-x.app/api';
 
             this.config_url = 'https://config.fast-x.app/api';
 
