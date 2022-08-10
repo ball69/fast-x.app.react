@@ -2,26 +2,52 @@ import axios from 'axios';
 
 var hostname = window.location.pathname;
 
-// console.log(hostname);
-
-// console.log(hostname.indexOf('fast-x'));
-
-// let API_URL = 'https://bot.fast-x.app/api/';
-
-// if (hostname.indexOf('fast-x') > -1) {
-
-const API_URL = 'https://bot.fast-x.app/api/';
-
-// const API_URL = 'http://bot.fast-x.localhost/api/';
-
-// const API_URL = 'https://bot.casinoauto.app/api/';
-
-// }
-
 class wheelService {
 
+    async getServer() {
+
+        const pathname = await window.location.pathname.substr(1).split('/');
+
+        const subdomain = await pathname[0];
+
+        const hostname = await window.location.hostname;
+
+        if (hostname == 'appy.bet') {
+
+            this.config_url = 'https://config.appy.bet/api';
+
+            if (subdomain === 'pg88') {
+                this.api_url = 'https://ap0.appy.bet/api';
+            } else if (subdomain === 'pgslots') {
+                this.api_url = 'https://ap1.appy.bet/api';
+            } else if (subdomain === 'ambme') {
+                this.api_url = 'https://ap2.appy.bet/api';
+            }
+
+            // await axios
+            //     .post('https://config.appy.bet/api/brand', {
+            //         subdomain: subdomain
+            //     })
+            //     .then((response) => {
+            //         this.api_url = 'https://' + response.data.data.server_subdomain + '.appy.bet/api';
+            //         return response.data;
+            //     }, (error) => {
+            //         return error;
+            //     });
+
+        } else {
+
+            this.api_url = 'https://bot.fast-x.app/api/';
+
+            this.config_url = 'https://bot.fast-x.app/api';
+
+        }
+
+    }
+
     async config(data) {
-        const result = await axios.post(API_URL + 'wheel', {
+        await this.getServer();
+        const result = await axios.post(this.api_url + 'wheel', {
             customer_id: data
         }, {
             headers: {
@@ -36,8 +62,8 @@ class wheelService {
     }
 
     async reward(data) {
-        console.log(data);
-        const result = await axios.post(API_URL + 'wheel/store', {
+        await this.getServer();
+        const result = await axios.post(this.api_url + 'wheel/store', {
             customer_id: data.customer_id,
             wheel_slot_config_id: data.wheel_slot_config_id
         }, {

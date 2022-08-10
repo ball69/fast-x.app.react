@@ -383,7 +383,7 @@ class Home extends Component {
                                                 <h1 className="">ยินดีต้อนรับ คุณ {this.state.user.name}</h1>
                                             </div>
                                             <div className="">
-                                                <img src={`${this.state.brand.logo_url}`} className="img-fluid rounded-circle d-lg-none pb-2" width={100} alt="" />
+                                                <img src={`${this.state.brand.logo_url}`} className="img-fluid d-lg-none pb-2" width={100} alt="" />
                                             </div>
                                             <div className="clearfix"></div>
                                             <div className="row">
@@ -441,7 +441,7 @@ class Home extends Component {
                                                         }
                                                     </div>
                                                 </div>
-                                                <div className="col-lg-4 col-md-4">
+                                                <div className="col-lg-4 col-md-4 mt-3">
                                                     <div className="card card-auto-3">
                                                         <div className="card-header">
                                                             <h2 className="card-title">ไอดีเข้าเล่นเกมส์</h2>

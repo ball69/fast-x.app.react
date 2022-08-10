@@ -3,7 +3,6 @@ const initialState = {
 
 export function brand(state = initialState, action) {
     switch (action.type) {
-
         case "BRAND_SET":
             return {
                 brand: action.response.data,
@@ -11,7 +10,7 @@ export function brand(state = initialState, action) {
 
         case "BRAND_CLEAR":
             return {
-
+                brand: ''
             }
         case "BRAND_FAILURE":
             return {

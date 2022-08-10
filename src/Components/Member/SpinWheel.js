@@ -374,9 +374,10 @@ const Example = (props) => {
                                                                         <td>
                                                                             {(() => {
                                                                                 if (item.wheel_slot_config_type == 0) {
-                                                                                    return (
-                                                                                        <span>{item.promotion.name}</span>
-                                                                                    )
+                                                                                    console.log(item.promotion_id);
+                                                                                    // return (
+                                                                                    //     <span>{item.promotion.name}</span>
+                                                                                    // )
                                                                                 } else if (item.wheel_slot_config_type == 1) {
                                                                                     return (
                                                                                         <span>{item.credit} $</span>

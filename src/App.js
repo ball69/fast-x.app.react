@@ -32,9 +32,9 @@ class App extends Component {
 
 
     render() {
-        if (process.env.NODE_ENV === 'production') {
-            console.log(window.location.hostname);
-        }
+
+        console.log(window.location.hostname);
+
         return (
             <Router history={history}>
                 <div>

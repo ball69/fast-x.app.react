@@ -1,30 +1,41 @@
 import axios from 'axios';
 
-var hostname = window.location.pathname;
-
-// console.log(hostname);
-
-// console.log(hostname.indexOf('fast-x'));
-
-// let API_URL = 'https://bot.fast-x.app/api/';
-
-const API_URL = 'https://bot.fast-x.app/api/';
-
-// const API_URL = 'http://bot.fast-x.localhost/api/';
-
-// const API_URL = 'https://bot.casinoauto.app/api/';
-
-// }o
-
 class brandService {
 
-    constructor() {
-        this.token = localStorage.getItem('token');
+    async getServer() {
+
+        const pathname = await window.location.pathname.substr(1).split('/');
+
+        const subdomain = await pathname[0];
+
+        const hostname = await window.location.hostname;
+
+        if (hostname == 'appy.bet') {
+
+            this.config_url = 'https://config.appy.bet/api';
+
+            if (subdomain === 'pg88') {
+                this.api_url = 'https://ap0.appy.bet/api';
+            } else if (subdomain === 'pgslots') {
+                this.api_url = 'https://ap1.appy.bet/api';
+            } else if (subdomain === 'ambme') {
+                this.api_url = 'https://ap2.appy.bet/api';
+            }
+
+        } else {
+
+            this.api_url = 'https://bot.fast-x.app/api/';
+
+            this.config_url = 'https://bot.fast-x.app/api';
+
+        }
+
     }
 
     async checkBrand(subdomain) {
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'check/brand', {
+            .post(this.config_url + "/brand", {
                 subdomain: subdomain
             })
             .then((response) => {
@@ -34,9 +45,12 @@ class brandService {
             })
         return result;
     }
+
+
     async getUrl(customer_id) {
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'url', {
+            .post(this.api_url + '/url', {
                 customer_id: customer_id
             }, {
                 headers: {
@@ -52,8 +66,20 @@ class brandService {
         return result;
     }
     async getBank() {
+        await this.getServer();
         const result = await axios
-            .get(API_URL + 'get/bank')
+            .get(this.api_url + '/get/bank')
+            .then((response) => {
+                return response.data
+            }, (error) => {
+                return error
+            });
+        return result
+    }
+    async getBankAccount(brand_id) {
+        await this.getServer();
+        const result = await axios
+            .get(this.api_url + '/get/bank-account/' + brand_id)
             .then((response) => {
                 return response.data
             }, (error) => {
@@ -62,8 +88,9 @@ class brandService {
         return result
     }
     async checkPhone(brand_id, telephone) {
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'check/phone', {
+            .post(this.api_url + '/check/phone', {
                 brand_id: brand_id,
                 telephone: telephone
             })
@@ -75,8 +102,9 @@ class brandService {
         return result;
     }
     async checkBank(brand_id, bank_account) {
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'check/bank', {
+            .post(this.api_url + '/check/bank', {
                 brand_id: brand_id,
                 bank_account: bank_account
             })
@@ -88,8 +116,9 @@ class brandService {
         return result;
     }
     async getPromotion(customer_id) {
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'get/promotion',
+            .post(this.api_url + '/get/promotion',
                 {
                     customer_id: customer_id,
                 },
@@ -106,8 +135,9 @@ class brandService {
         return result;
     }
     async getGameList(user_id, type_game) {
+        await this.getServer();
         const result = await axios
-            .get(API_URL + 'game-list/' + user_id + '/' + type_game, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), } })
+            .get(this.api_url + '/game-list/' + user_id + '/' + type_game, { headers: { Authorization: 'Bearer ' + localStorage.getItem('token'), } })
             .then((response) => {
                 return response.data
             }, (error) => {
@@ -116,7 +146,8 @@ class brandService {
         return result
     }
     async startGame(user_id, game) {
-        const result = await axios.post(API_URL + 'start-game', {
+        await this.getServer();
+        const result = await axios.post(this.api_url + '/start-game', {
             user_id: user_id,
             game_id: game.id,
             provider: game.provider,
@@ -129,8 +160,9 @@ class brandService {
         return result
     }
     async credit(customer_id) {
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'credit',
+            .post(this.api_url + '/credit',
                 {
                     customer_id: customer_id,
                 },
@@ -147,8 +179,9 @@ class brandService {
         return result;
     }
     async updatePromotion(customer_id, promotion_id) {
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'promotion/update',
+            .post(this.api_url + '/promotion/update',
                 {
                     customer_id: customer_id,
                     promotion_id: promotion_id,
@@ -165,8 +198,9 @@ class brandService {
         return result;
     }
     async selectPromotion(customer_id, promotion_id) {
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'promotion/select',
+            .post(this.api_url + '/promotion/select',
                 {
                     customer_id: customer_id,
                     promotion_id: promotion_id,
@@ -183,8 +217,9 @@ class brandService {
         return result;
     }
     async profile(customer_id) {
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'profile',
+            .post(this.api_url + '/profile',
                 {
                     customer_id: customer_id,
                 },
@@ -200,10 +235,11 @@ class brandService {
         return result;
     }
     async withdraw(customer_id, number) {
+        await this.getServer();
         var result = '';
         await axios
             .post(
-                API_URL + 'withdraw',
+                this.api_url + '/withdraw',
                 {
                     customer_id: customer_id,
                     amount: number,
@@ -223,7 +259,8 @@ class brandService {
         return result;
     }
     async history(customer_id) {
-        var result = await axios.post(API_URL + 'history', {
+        await this.getServer();
+        var result = await axios.post(this.api_url + '/history', {
             customer_id: customer_id
         }, {
             headers: {
@@ -239,7 +276,8 @@ class brandService {
         return result;
     }
     async invite(customer_id) {
-        var result = await axios.post(API_URL + 'invite', {
+        await this.getServer();
+        var result = await axios.post(this.api_url + '/invite', {
             customer_id: customer_id
         }, {
             headers: {
@@ -258,7 +296,8 @@ class brandService {
         return result;
     }
     async inviteStore(customer_id, promotion_id, amount) {
-        var result = await axios.post(API_URL + 'invite/store', {
+        await this.getServer();
+        var result = await axios.post(this.api_url + '/invite/store', {
             customer_id: customer_id,
             promotion_id: promotion_id,
             amount: amount
@@ -281,8 +320,9 @@ class brandService {
 
     async freeCredit(customer_id, code) {
 
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'promotion/credit-free',
+            .post(this.api_url + '/promotion/credit-free',
                 {
                     customer_id: customer_id,
                     code: code
@@ -297,6 +337,75 @@ class brandService {
                     return error;
                 })
         return result;
+    }
+
+    async getBrandInvitePromotion(brand_id, customer_id) {
+
+        await this.getServer();
+        const result = await axios
+            .get(this.api_url + '/brand/invite', {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                },
+            }).then((response) => {
+                return response.data;
+            }, (error) => {
+                return error;
+            });
+        return result;
+
+    }
+
+    async getCustomerInvite(customer_id) {
+
+        await this.getServer();
+        const result = await axios
+            .get(this.api_url + '/brand/invite/customer/' + customer_id, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                },
+            }).then((response) => {
+                return response.data;
+            }, (error) => {
+                return error;
+            });
+        return result;
+
+    }
+
+    async getCustomerBonus(customer_id) {
+
+        await this.getServer();
+        const result = await axios
+            .get(this.api_url + '/brand/invite/customer/bonus/' + customer_id, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                },
+            }).then((response) => {
+                return response.data;
+            }, (error) => {
+                return error;
+            });
+        return result;
+    }
+
+    async receiveCustomerBonus(customer_promotion_invite_id) {
+
+        await this.getServer();
+        const result = await axios
+            .post(this.api_url + '/brand/invite/customer/bonus/', {
+                customer_promotion_invite_id: customer_promotion_invite_id
+            }, {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('token'),
+                },
+            }).then((response) => {
+                return response.data;
+            }, (error) => {
+                return error;
+            });
+        return result;
+
     }
 
 }

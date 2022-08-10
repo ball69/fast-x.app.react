@@ -53,21 +53,19 @@ class Login extends Component {
     }
     handleTelephoneChange(e) { this.setState({ telephone: e.target.value }) }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { brand } = this.props.match.params;
-        brandService.checkBrand(brand)
+        await brandService.checkBrand(brand)
             .then(response => {
-                // console.log(response);
                 this.setState(() => {
                     return { brand: response.data };
                 });
                 this.setState({
                     loading: false,
-                })
+                });
             }, (err) => {
                 alert(err);
             });
-        // console.log(this.state)
     }
 
     async handleSubmitLogin(e) {
@@ -81,7 +79,7 @@ class Login extends Component {
         const { username, password, telephone, brand, typeLogin } = this.state;
 
 
-        await authService.login(username, password, telephone, brand.id, typeLogin)
+        await authService.login(username, password, telephone, brand.id, typeLogin, this.state.brand.server_subdomain)
             .then((response) => {
                 if (!response.message) {
                     this.setState({

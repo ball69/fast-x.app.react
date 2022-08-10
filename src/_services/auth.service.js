@@ -1,29 +1,42 @@
 import axios from 'axios';
 
-var hostname = window.location.pathname;
-
-// console.log(hostname);
-
-// console.log(hostname.indexOf('fast-x'));
-
-// let API_URL = 'https://bot.fast-x.app/api/auth/';
-
-// if (hostname.indexOf('fast-x') > -1) {
-
-// const API_URL = 'https://bot.tbf.bet/api/';
-
-const API_URL = 'https://bot.fast-x.app/api/';
-
-// const API_URL = 'http://bot.fast-x.localhost/api/';
-
-// const API_URL = 'https://bot.casinoauto.app/api/';
-
-// }
-
 class authService {
-    async register(data) {
+
+    async getServer() {
+
+        const pathname = await window.location.pathname.substr(1).split('/');
+
+        const subdomain = await pathname[0];
+
+        const hostname = await window.location.hostname;
+
+        if (hostname == 'appy.bet') {
+
+            this.config_url = 'https://config.appy.bet/api/';
+
+            if (subdomain === 'pg88') {
+                this.api_url = 'https://ap0.appy.bet/api/';
+            } else if (subdomain === 'pgslots') {
+                this.api_url = 'https://ap1.appy.bet/api/';
+            } else if (subdomain === 'ambme') {
+                this.api_url = 'https://ap2.appy.bet/api/';
+            }
+
+        } else {
+
+            this.api_url = 'https://bot.fast-x.app/api';
+
+            this.config_url = 'https://bot.fast-x.app/api';
+
+        }
+
+    }
+
+    async register(data, api_url) {
+
+        await this.getServer();
         const result = await axios
-            .post(API_URL + 'auth/register', data)
+            .post(this.api_url + 'auth/register', data)
             .then((response) => {
                 return response;
             }, (error) => {
@@ -31,10 +44,11 @@ class authService {
             })
         return result;
     }
-    async check(token) {
+    async check(token, api_url) {
+        await this.getServer();
         const result = await axios
             .post(
-                API_URL + "check",
+                this.api_url + "check",
                 {},
                 {
                     headers: {
@@ -51,9 +65,10 @@ class authService {
 
         return result;
     }
-    async login(username, password, telephone, brand_id, typeLogin) {
+    async login(username, password, telephone, brand_id, typeLogin, api_url) {
+        await this.getServer();
         var result = await axios
-            .post(API_URL + "auth/login", {
+            .post(this.api_url + "auth/login", {
                 username: username,
                 password: password,
                 telephone: telephone,

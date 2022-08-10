@@ -234,7 +234,7 @@ class Register extends Component {
             password: this.state.password,
             line_id: this.state.line_id,
             from_type: this.state.from_type,
-            from_type_remark: this.state.from_type_remark
+            from_type_remark: this.state.from_type_remark,
         })
             .then((response) => {
 
