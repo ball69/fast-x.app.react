@@ -8,7 +8,11 @@ export default function InviteList({ customer_promotion_invite, selectCustomerBo
         setModal(false);
         brandService.receiveCustomerBonus(customer_promotion_invite.id)
             .then(response => {
-                NotificationManager.success(`รับโบนัสสำเร็จแล้ว`, '', 1000);
+                if (response.status == 200) {
+                    NotificationManager.success(response.msg, '', 1000);
+                } else {
+                    NotificationManager.warning(response.msg, '', 1000);
+                }
             }).catch(error => {
                 console.log(error);
             })

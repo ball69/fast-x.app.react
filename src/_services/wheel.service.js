@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from 'axios/';
 
 var hostname = window.location.pathname;
 
@@ -14,32 +14,27 @@ class wheelService {
 
         if (hostname == 'appy.bet') {
 
-            this.config_url = 'https://config.appy.bet/api/';
+            this.config_url = 'https://config.appy.bet/api';
 
-            if (subdomain === 'pg88') {
-                this.api_url = 'https://ap0.appy.bet/api/';
-            } else if (subdomain === 'pgslots') {
-                this.api_url = 'https://ap1.appy.bet/api/';
+            if (subdomain === 'pgslots') {
+                this.api_url = 'https://ap1.appy.bet/api';
             } else if (subdomain === 'ambme') {
-                this.api_url = 'https://ap2.appy.bet/api/';
+                this.api_url = 'https://ap2.appy.bet/api';
+            } else {
+                this.api_url = 'https://ap0.appy.bet/api';
             }
 
-            // await axios
-            //     .post('https://config.appy.bet/api/brand', {
-            //         subdomain: subdomain
-            //     })
-            //     .then((response) => {
-            //         this.api_url = 'https://' + response.data.data.server_subdomain + '.appy.bet/api';
-            //         return response.data;
-            //     }, (error) => {
-            //         return error;
-            //     });
+        } else if (hostname == 'localhost') {
 
-        } else {
+            this.config_url = 'https://config.appy.bet/api';
 
-            this.api_url = 'https://bot.fast-x.app/api/';
+            this.api_url = 'https://ap0.appy.bet/api';
 
-            this.config_url = 'https://config.fast-x.app/api/';
+        } else if (hostname == 'fast-x') {
+
+            this.config_url = 'https://config.fast-x.app/api';
+
+            this.api_url = 'https://bot.fast-x.app/api';
 
         }
 
@@ -47,7 +42,7 @@ class wheelService {
 
     async config(data) {
         await this.getServer();
-        const result = await axios.post(this.api_url + 'wheel', {
+        const result = await axios.post(this.api_url + '/wheel', {
             customer_id: data
         }, {
             headers: {
@@ -63,7 +58,7 @@ class wheelService {
 
     async reward(data) {
         await this.getServer();
-        const result = await axios.post(this.api_url + 'wheel/store', {
+        const result = await axios.post(this.api_url + '/wheel/store', {
             customer_id: data.customer_id,
             wheel_slot_config_id: data.wheel_slot_config_id
         }, {

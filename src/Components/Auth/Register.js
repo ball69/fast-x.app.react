@@ -311,7 +311,7 @@ class Register extends Component {
                     </div>
                     <div className="form-group">
                         <p>เลขที่บัญชีธนาาคาร <span className="text-danger">*</span></p>
-                        <InputMask type="tel" mask="999999999999999" className="form-control form-control-lg form-auto" placeholder="เลขบัญชีธนาคาร"
+                        <InputMask type="tel" mask="999999999999999" disableUnderline maskChar={null} className="form-control form-control-lg form-auto" placeholder="เลขบัญชีธนาคาร"
                             value={this.state.bank_account} onChange={this.handleBankAccountChange} required />
                     </div>
                     <div className="form-group">

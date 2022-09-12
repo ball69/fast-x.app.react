@@ -58,27 +58,28 @@ const Example = (props) => {
     const [bindMouse, setBindMouse] = useState(false);
     var timeSkipInterval;
 
-    const startSpin = () => {
+    const startSpin = async () => {
         if (selectedItem === null) {
             let selected;
-            spinSlot.map((item, index) => {
+            await spinSlot.map((item, index) => {
                 if (wheelResult === item[0]) {
                     selected = index;
                 }
             });
-            setSelectedItem(selected);
-            setWheelAmount(wheelAmount - 1);
-            setWheelStatus(false);
-            setTimeout(() => {
-                setWheelScore(0);
-                setScorePercent(0);
-                setScorePercentString(0);
-                setModalReward(true);
-                setRewardString(spinSlot[selected][1]);
-                setSpinReward(spinSlot[selected][0]);
+            await setSelectedItem(selected);
+            await setWheelAmount(wheelAmount - 1);
+            await setWheelStatus(false);
+            await setTimeout(async () => {
+                await setWheelScore(0);
+                await setScorePercent(0);
+                await setScorePercentString(0);
+                await setModalReward(true);
+                await setRewardString(spinSlot[selected][1]);
+                await setSpinReward(spinSlot[selected][0]);
+                await getReward(spinSlot[selected][0]);
             }, 1500);
         } else {
-            setSelectedItem(null);
+            await setSelectedItem(null);
         }
     };
 
@@ -115,13 +116,13 @@ const Example = (props) => {
         }
     }
 
-    useEffect(() => {
-        brandService.checkBrand(brandName)
+    useEffect(async () => {
+        await brandService.checkBrand(brandName)
             .then((response) => {
                 setBrand(response.data);
             }, () => {
             });
-        brandService.getUrl(user.id)
+        await brandService.getUrl(user.id)
             .then((response) => {
                 setUrl(response.data);
             }, (error) => {
@@ -129,7 +130,7 @@ const Example = (props) => {
             }).catch((error) => {
                 console.log(error);
             });
-        brandService.credit(user.id)
+        await brandService.credit(user.id)
             .then((response) => {
                 if (response.data) {
                     const credit = (response.data.credit) ? parseFloat(response.data.credit).toFixed(2) : 0.00;
@@ -142,9 +143,8 @@ const Example = (props) => {
                 });
             });
 
-        wheelService.config(user.id)
+        await wheelService.config(user.id)
             .then((response) => {
-                //
                 if (response.wheel.status == 1) {
                     installSpinWheel(response);
                     setCustomerWheels(response.customer_wheels);
@@ -241,18 +241,17 @@ const Example = (props) => {
         return test;
     }
 
-    const getReward = () => {
-        setModalReward(false);
+    const getReward = (reward) => {
         wheelService.reward({
             customer_id: user.id,
-            wheel_slot_config_id: spinReward
+            wheel_slot_config_id: reward
         }).then((response) => {
             if (response.status === 500) {
                 NotificationManager.warning(response.message, '');
-                window.location.reload(true);
+                // window.location.reload(true);
             } else {
                 NotificationManager.info(response.message, '');
-                window.location.reload(true);
+                // window.location.reload(true);
             }
         }, (error) => {
             console.log(error);
@@ -283,7 +282,7 @@ const Example = (props) => {
                                 <h3 className="text-dark text-center pt-2 pb-4"> คุณได้
                                     "<span >{rewardString}</span>"
                                 </h3>
-                                <button className="btn btn-success btn-lg btn-block" onClick={() => getReward()}>รับรางวัล</button>
+                                <button className="btn btn-success btn-lg btn-block" onClick={() => window.location.reload(true)}>ตกลง</button>
                             </Modal.Body>
                         </Modal>
                         <Modal show={modalYoutube} data-toggle="modal" data-backdrop="static" data-keyboard="false">
@@ -374,10 +373,9 @@ const Example = (props) => {
                                                                         <td>
                                                                             {(() => {
                                                                                 if (item.wheel_slot_config_type == 0) {
-                                                                                    console.log(item.promotion_id);
-                                                                                    // return (
-                                                                                    //     <span>{item.promotion.name}</span>
-                                                                                    // )
+                                                                                    return (
+                                                                                        <span>{item.promotion.name}</span>
+                                                                                    )
                                                                                 } else if (item.wheel_slot_config_type == 1) {
                                                                                     return (
                                                                                         <span>{item.credit} $</span>

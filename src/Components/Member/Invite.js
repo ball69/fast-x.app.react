@@ -37,20 +37,20 @@ export default function Invite(props) {
         await brandService.checkBrand(brandName)
             .then(response => {
                 setBrand(response.data);
+                brandService.getBrandInvitePromotion(response.data.id)
+                    .then(response => {
+                        if (response.data.status == 0) {
+                            alert('แนะนำเพื่อนปิดปรับปรุง');
+                            // console.log(props);
+                            props.history.goBack();
+                            return;
+                        }
+                        setBrandPromotionInvite(response.data);
+                    });
             });
         await brandService.getUrl(user.id)
             .then(response => {
                 setUrl(response.data);
-            });
-        await brandService.getBrandInvitePromotion()
-            .then(response => {
-                if (response.data.status == 0) {
-                    alert('แนะนำเพื่อนปิดปรับปรุง');
-                    // console.log(props);
-                    props.history.goBack();
-                    return;
-                }
-                setBrandPromotionInvite(response.data);
             });
         await brandService.getCustomerInvite(user.id)
             .then(response => {

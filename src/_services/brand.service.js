@@ -14,19 +14,25 @@ class brandService {
 
             this.config_url = 'https://config.appy.bet/api';
 
-            if (subdomain === 'pg88') {
-                this.api_url = 'https://ap0.appy.bet/api';
-            } else if (subdomain === 'pgslots') {
+            if (subdomain === 'pgslots') {
                 this.api_url = 'https://ap1.appy.bet/api';
             } else if (subdomain === 'ambme') {
                 this.api_url = 'https://ap2.appy.bet/api';
+            } else {
+                this.api_url = 'https://ap0.appy.bet/api';
             }
 
-        } else {
+        } else if (hostname == 'localhost') {
 
-            this.api_url = 'https://bot.fast-x.app/api';
+            this.config_url = 'https://config.appy.bet/api';
+
+            this.api_url = 'https://ap0.appy.bet/api';
+
+        } else if (hostname == 'fast-x') {
 
             this.config_url = 'https://config.fast-x.app/api';
+
+            this.api_url = 'https://bot.fast-x.app/api';
 
         }
 
@@ -339,11 +345,11 @@ class brandService {
         return result;
     }
 
-    async getBrandInvitePromotion(brand_id, customer_id) {
+    async getBrandInvitePromotion(brand_id) {
 
         await this.getServer();
         const result = await axios
-            .get(this.api_url + '/brand/invite', {
+            .get(this.api_url + '/brand/invite/' + brand_id, {
                 headers: {
                     Authorization: 'Bearer ' + localStorage.getItem('token'),
                 },

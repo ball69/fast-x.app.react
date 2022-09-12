@@ -24,6 +24,7 @@ class Deposit extends Component {
             promotions: [],
             radio: 2,
             url: '',
+            bankAccountWebs: '',
         }
         this.hideModal = this.hideModal.bind(this);
         this.hideModalPromotion = this.hideModalPromotion.bind(this);
@@ -43,6 +44,9 @@ class Deposit extends Component {
     }
 
     async componentDidMount() {
+        this.setState({
+            loading: true
+        });
         await brandService.checkBrand(this.brand)
             .then((response) => {
                 if (response.data.id !== this.state.user.brand_id) {
@@ -66,15 +70,17 @@ class Deposit extends Component {
                             this.setState({
                                 promotions: response.data
                             })
-                            this.setState({
-                                loading: false
-                            });
                         }, (error) => {
                             console.log(error);
                         })
-                    this.setState({
-                        loading: false
-                    });
+                    brandService.getBankAccount(this.state.user.brand_id)
+                        .then(response => {
+                            this.setState({
+                                bankAccountWebs: response.data
+                            });
+                        }, (error) => {
+                            console.log(error);
+                        });
                 }
             }, (error) => {
                 console.log(error);
@@ -88,14 +94,14 @@ class Deposit extends Component {
                     profile: response.data,
                     promotionNow: response.data,
                 });
-                if (response.data.line_user_id == null && this.state.brand.line_liff_connect != null) {
-                    // this.setState({
-                    //     modal: true
-                    // });
-                    this.setState({
-                        loading: false
-                    });
-                }
+                // if (response.data.line_user_id == null && this.state.brand.line_liff_connect != null) {
+                //     // this.setState({
+                //     //     modal: true
+                //     // });
+                //     this.setState({
+                //         loading: false
+                //     });
+                // }
             }, (err) => {
                 console.log(err);
             });
@@ -215,7 +221,7 @@ class Deposit extends Component {
                                                                                     src={
                                                                                         profile.bank.logo === undefined
                                                                                             ? ""
-                                                                                            : "https://bot.tbf.bet/" + profile.bank.logo
+                                                                                            : "https://a90.appy.bet/" + profile.bank.logo
                                                                                     }
                                                                                     alt=""
                                                                                     width="30"
@@ -271,7 +277,7 @@ class Deposit extends Component {
                                                                 <h4>1. โอนเงินเข้าบัญชีธนาคาร</h4>
                                                                 <hr />
                                                                 <div className="row">
-                                                                    {this.state.brand.bank_account_webs.filter(bank_account => bank_account.status_bot == 1).map((bank, index) => (
+                                                                    {this.state.bankAccountWebs.map((bank, index) => (
                                                                         (
                                                                             [0, 1, 6, 8, 9, 11].includes(bank.type)
                                                                                 ?
@@ -286,7 +292,7 @@ class Deposit extends Component {
                                                                                     >
                                                                                         <div className="card-body">
                                                                                             <img
-                                                                                                src={"https://file.fast-x.app/" + bank.bank.logo}
+                                                                                                src={"https://a90.appy.bet/" + bank.bank.logo}
                                                                                                 className="img-fluid img-center mb-5"
                                                                                                 width="60"
                                                                                                 alt=""
@@ -344,12 +350,12 @@ class Deposit extends Component {
                                                         :
                                                         <div className="row">
                                                             <div className="col-lg-12">
-                                                                <h4> <i className="fad fa-exclamation-triangle pr-1"></i> ขณะนี้ระบบธนาคารมีปัญหากรุณาโอนเงินมาที่ธนาคาร</h4>
+                                                                <h4> <i className="fad fa-exclamation-triangle pr-1"></i> ขณะนี้ระบบธนาคาร SCB มีปัญหากรุณาโอนเงินมาที่ธนาคาร</h4>
                                                                 <hr />
                                                                 <div className="row">
-                                                                    {this.state.brand.bank_account_webs.map((bank, index) => (
+                                                                    {this.state.bankAccountWebs.map((bank, index) => (
                                                                         (
-                                                                            [2, 8].includes(bank.type)
+                                                                            [2, 9, 8].includes(bank.type)
                                                                                 ?
                                                                                 <div key={index} className="col-lg-2 col-6">
                                                                                     <div
@@ -362,7 +368,7 @@ class Deposit extends Component {
                                                                                     >
                                                                                         <div className="card-body">
                                                                                             <img
-                                                                                                src={"https://file.fast-x.app/" + bank.bank.logo}
+                                                                                                src={"https://a90.appy.bet/" + bank.bank.logo}
                                                                                                 className="img-fluid img-center mb-5"
                                                                                                 width="60"
                                                                                                 alt=""

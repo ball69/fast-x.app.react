@@ -12,21 +12,27 @@ class authService {
 
         if (hostname == 'appy.bet') {
 
-            this.config_url = 'https://config.appy.bet/api/';
+            this.config_url = 'https://config.appy.bet/api';
 
-            if (subdomain === 'pg88') {
-                this.api_url = 'https://ap0.appy.bet/api/';
-            } else if (subdomain === 'pgslots') {
-                this.api_url = 'https://ap1.appy.bet/api/';
+            if (subdomain === 'pgslots') {
+                this.api_url = 'https://ap1.appy.bet/api';
             } else if (subdomain === 'ambme') {
-                this.api_url = 'https://ap2.appy.bet/api/';
+                this.api_url = 'https://ap2.appy.bet/api';
+            } else {
+                this.api_url = 'https://ap0.appy.bet/api';
             }
 
-        } else {
+        } else if (hostname == 'localhost') {
 
-            this.api_url = 'https://bot.fast-x.app/api/';
+            this.config_url = 'https://config.appy.bet/api';
 
-            this.config_url = 'https://config.fast-x.app/api/';
+            this.api_url = 'https://ap0.appy.bet/api';
+
+        } else if (hostname == 'fast-x') {
+
+            this.config_url = 'https://config.fast-x.app/api';
+
+            this.api_url = 'https://bot.fast-x.app/api';
 
         }
 
@@ -36,7 +42,7 @@ class authService {
 
         await this.getServer();
         const result = await axios
-            .post(this.api_url + 'auth/register', data)
+            .post(this.api_url + '/auth/register', data)
             .then((response) => {
                 return response;
             }, (error) => {
@@ -68,7 +74,7 @@ class authService {
     async login(username, password, telephone, brand_id, typeLogin, api_url) {
         await this.getServer();
         var result = await axios
-            .post(this.api_url + "auth/login", {
+            .post(this.api_url + "/auth/login", {
                 username: username,
                 password: password,
                 telephone: telephone,
