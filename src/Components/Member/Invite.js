@@ -39,6 +39,12 @@ export default function Invite(props) {
                 setBrand(response.data);
                 brandService.getBrandInvitePromotion(response.data.id)
                     .then(response => {
+                        if (!response.data) {
+                            alert('แนะนำเพื่อนปิดปรับปรุง');
+                            // console.log(props);
+                            props.history.goBack();
+                            return;
+                        }
                         if (response.data.status == 0) {
                             alert('แนะนำเพื่อนปิดปรับปรุง');
                             // console.log(props);
