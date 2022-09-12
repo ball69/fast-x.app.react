@@ -30,7 +30,7 @@ class wheelService {
 
             this.api_url = 'https://ap0.appy.bet/api';
 
-        } else if (hostname == 'fast-x') {
+        } else if (hostname == 'fast-x.app') {
 
             this.config_url = 'https://config.fast-x.app/api';
 
