@@ -18,8 +18,16 @@ class wheelService {
 
             if (subdomain === 'pgslots') {
                 this.api_url = 'https://ap1.appy.bet/api';
-            } else if (subdomain === 'ambme') {
+            } else if (subdomain === 'betflix168') {
                 this.api_url = 'https://ap2.appy.bet/api';
+            } else if (subdomain === 'bfauto88') {
+                this.api_url = 'https://ap3.appy.bet/api';
+            } else if (subdomain === 'bflm') {
+                this.api_url = 'https://ap4.appy.bet/api';
+            } else if (subdomain === 'bfasia') {
+                this.api_url = 'https://ap5.appy.bet/api';
+            } else if (subdomain === 'pg599') {
+                this.api_url = 'https://ap6.appy.bet/api';
             } else {
                 this.api_url = 'https://ap0.appy.bet/api';
             }
@@ -30,7 +38,7 @@ class wheelService {
 
             this.api_url = 'https://ap0.appy.bet/api';
 
-        } else if (hostname == 'fast-x.app') {
+        } else if (hostname == 'fast-x') {
 
             this.config_url = 'https://config.fast-x.app/api';
 

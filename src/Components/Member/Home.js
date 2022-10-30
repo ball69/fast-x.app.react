@@ -31,7 +31,7 @@ class Home extends Component {
             url: '',
             profile: '',
             buttonPromotionLoad: 0,
-
+            game_id: '',
             payloadCredit: '',
             freeCreditModal: false,
         }
@@ -48,49 +48,52 @@ class Home extends Component {
     }
 
     freeCredit() {
-
         this.setState({
-            freeCreditModal: false,
-            payloadCredit: ''
-        });
+            loading: true
+        })
 
         brandService.freeCredit(this.state.user.id, this.state.payloadCredit)
-            .then((response) => {
+            .then(async (response) => {
+                if (this.state.game_id == 14) {
 
-                if (response.status == 500) {
-                    NotificationManager.warning(response.message, '');
-                } else {
-                    NotificationManager.info(response.message, '');
-                }
-
-                brandService.credit(this.state.user.id)
-                    .then((response) => {
-                        if (response.data) {
-                            var today = new Date();
-                            var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
-                            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-                            const credit = (response.data.credit) ? parseFloat(response.data.credit).toFixed(2) : 0.00;
-                            this.setState({
-                                credit: credit,
-                                creditLastUpdate: date + ' ' + time,
-                                promotionLast: response.data.promotion_last,
-                            })
-                            this.setState({
-                                loadingCredit: false
-                            });
-                        }
-                    }, (error) => {
-                        // console.log(error);
-                        this.setState({
-                            loadingCredit: false
+                    await setTimeout(async () => {
+                        await this.setState({
+                            freeCreditModal: false,
+                            payloadCredit: ''
                         });
-                    });
-                // }
 
-                // this.setState({
-                //     freeCreditModal: false,
-                //     payloadCredit: ''
-                // });
+                        await this.setState({
+                            loading: false
+                        });
+
+                        await this.handleRefreshCredit();
+
+                        if (response.status == 500) {
+                            NotificationManager.warning(response.message, '');
+                        } else {
+                            NotificationManager.info(response.message, '');
+                        }
+
+                    }, 5000);
+
+                } else {
+                    await this.setState({
+                        freeCreditModal: false,
+                        payloadCredit: ''
+                    });
+
+                    await this.setState({
+                        loading: false
+                    });
+
+                    await this.handleRefreshCredit();
+
+                    if (response.status == 500) {
+                        NotificationManager.warning(response.message, '');
+                    } else {
+                        NotificationManager.info(response.message, '');
+                    }
+                }
 
             }, (error) => {
                 console.log(error);
@@ -111,9 +114,8 @@ class Home extends Component {
                 } else {
                     this.setState({
                         brand: response.data,
-                        // promotionInvite: promotionInvite,
+                        game_id: response.data.game_id
                     });
-
                 }
 
             }, (error) => {
@@ -187,7 +189,7 @@ class Home extends Component {
         await brandService.credit(this.state.user.id)
             .then((response) => {
                 if (response.data) {
-
+                    console.log(response);
                     var today = new Date();
                     var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
                     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();

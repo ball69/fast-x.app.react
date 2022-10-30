@@ -39,12 +39,6 @@ export default function Invite(props) {
                 setBrand(response.data);
                 brandService.getBrandInvitePromotion(response.data.id)
                     .then(response => {
-                        if (!response.data) {
-                            alert('แนะนำเพื่อนปิดปรับปรุง');
-                            // console.log(props);
-                            props.history.goBack();
-                            return;
-                        }
                         if (response.data.status == 0) {
                             alert('แนะนำเพื่อนปิดปรับปรุง');
                             // console.log(props);
@@ -121,16 +115,16 @@ export default function Invite(props) {
                                                             {(brandPromotionInvite.type_receive == 1)
                                                                 ?
                                                                 <React.Fragment>
-                                                                    เครดิตจำนวน {brandPromotionInvite.amount_receive} สามารถถอนได้เลย
+                                                                    {/* เครดิตจำนวน {brandPromotionInvite.amount_receive} สามารถถอนได้เลย */}
                                                                 </React.Fragment>
                                                                 :
                                                                 <React.Fragment>
-                                                                    {brandPromotionInvite.amount_receive} % ของยอดฝากแรก
+                                                                    {/* {brandPromotionInvite.amount_receive} % ของยอดฝากแรก */}
                                                                 </React.Fragment>
                                                             }
                                                             {(brandPromotionInvite.status_promotion_receive == 1) &&
                                                                 <React.Fragment>
-                                                                    และติดโปรโมชั่น {brandPromotionInvite.promotion_receive.name} จึงสามารถถอนเป็นเงินสดได้
+                                                                    ติดโปรโมชั่น {brandPromotionInvite.promotion_receive.name} จึงสามารถถอนเป็นเงินสดได้
                                                                 </React.Fragment>
                                                             }
                                                         </React.Fragment>
@@ -139,7 +133,7 @@ export default function Invite(props) {
                                                             {(brandPromotionInvite.type_receive == 1)
                                                                 ?
                                                                 <React.Fragment>
-                                                                    เครดิตจำนวน {brandPromotionInvite.amount_receive} สามารถถอนได้เลย
+                                                                    {/* เครดิตจำนวน {brandPromotionInvite.amount_receive} สามารถถอนได้เลย */}
                                                                 </React.Fragment>
                                                                 :
                                                                 <React.Fragment>

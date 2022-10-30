@@ -30,7 +30,6 @@ class Withdraw extends Component {
     }
 
     async componentWillMount() {
-
         await brandService.getUrl(this.state.user.id)
             .then((response) => {
                 this.setState({
@@ -41,7 +40,6 @@ class Withdraw extends Component {
             }).catch((error) => {
                 console.log(error);
             });
-
     }
 
     async componentDidMount() {
@@ -62,9 +60,7 @@ class Withdraw extends Component {
                                 profile: response.data
                             });
                             if (response.data.line_user_id == null && this.state.brand.line_liff_connect != null) {
-                                // this.setState({
-                                //     modal: true,
-                                // });
+
                             }
                         }, (err) => {
                             console.log(err);
@@ -93,7 +89,7 @@ class Withdraw extends Component {
                         this.setState({
                             loadingCredit: false
                         });
-                        if (response.data.promotionLast) {
+                        if (response.data.promotion_last) {
                             if (response.data.promotion_last.promotion.withdraw_max != 0) {
                                 this.calWithdrawMax();
                             }
@@ -113,8 +109,6 @@ class Withdraw extends Component {
         var promotionLast = this.state.promotionLast;
         var promotion = promotionLast.promotion;
         var turn_over_cost = (promotionLast && promotion.type_turn_over == 1) ? parseFloat(this.calBonusTurnOver(promotionLast)) : 0;
-        // console.log(promotion);
-        // console.log(credit);
         if (this.state.promotionLast.promotion.withdraw_max_type == 1) {
             var withdraw_max = promotion.withdraw_max;
         } else if (this.state.promotionLast.promotion.withdraw_max_type == 2) {
@@ -127,12 +121,18 @@ class Withdraw extends Component {
             })
         }
         this.setState({
-            withdraw_max: withdraw_max
+            creditWithdrawMax: withdraw_max
         })
     }
 
     handleWithdrawSubmit(e) {
         e.preventDefault();
+        let amount_withdraw
+        if (this.state.promotionLast) {
+            amount_withdraw = parseFloat(this.state.profile.credit);
+        } else {
+            amount_withdraw = this.state.amount_withdraw;
+        }
         const credit = parseFloat(this.state.profile.credit);
         const turn_over_cost = (this.state.promotionLast && this.state.promotionLast.promotion.type_turn_over == 1) ? parseFloat(this.calBonusTurnOver(this.state.promotionLast)) : 0;
         if (this.state.amount_withdraw <= 0 && this.state.creditWithdrawMax == 0) {
@@ -143,7 +143,7 @@ class Withdraw extends Component {
             NotificationManager.error('คุณยังทำเทิร์นไม่ถึงกรุณาทำเทิร์นให้ครบ ' + (new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 2 }).format(turn_over_cost)), 'คำเตือน', 2000);
             return;
         }
-        brandService.withdraw(this.state.user.id, this.state.amount_withdraw)
+        brandService.withdraw(this.state.user.id, amount_withdraw)
             .then(response => {
                 console.log(response);
                 if (response.data.code == 400) {
@@ -280,7 +280,8 @@ class Withdraw extends Component {
                                                             <h4>3. ถอนเงิน</h4>
                                                             <hr />
                                                             <div className='row'>
-                                                                {(this.state.creditWithdrawMax == 0) ?
+                                                                {console.log(this.state.promotionLast)}
+                                                                {(!this.state.promotionLast) ?
                                                                     <div className="col-lg-12 mx-auto">
                                                                         <div className="p-4 mt-1 mb-4" style={{ borderRadius: "5px" }}>
                                                                             <h5 >ระบุจำนวนเงินที่ต้องการถอน</h5>
@@ -300,13 +301,12 @@ class Withdraw extends Component {
                                                                     </div>
                                                                     :
                                                                     <div className="col-lg-12 mx-auto">
-
                                                                         <div className="p-4 mt-1 mb-4" style={{ borderRadius: "5px" }}>
                                                                             {(this.state.promotionStatus == 1) ?
                                                                                 <div>
                                                                                     <h5>คุณได้ทำเงื่อนไขครบตามที่โปรโมชั่นกำหนดไว้สำเร็จแล้ว</h5>
                                                                                     <button className="btn btn-auto mt-2 btn-block btn-lg" >
-                                                                                        <i className="fad fa-times mr-1"></i>
+                                                                                        <i className="fad fa-credit-card mr-1"></i>
                                                                                         ถอนเงิน
                                                                                     </button></div>
                                                                                 :
@@ -321,7 +321,6 @@ class Withdraw extends Component {
                                                                             <small className="text-white mb-0">ถอนสูงสุด {this.state.withdraw_max} บาท</small>
                                                                         </div>
                                                                     </div>
-
                                                                 }
                                                             </div>
                                                         </div>
